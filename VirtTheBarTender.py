@@ -49,7 +49,23 @@ def main():
     elif choice == str(4):
         non_alcoholic()
     elif choice == str(5):
+        search_ingredient()
+    elif choice == str(6):
         testing_1()
+
+def search_ingredient():
+    url_appended = url + url_filter
+    ingredients = input('Enter ingredients (seperated by commas): ')
+    querystring = {"i":ingredients}
+
+    response = requests.request("GET", url_appended, headers=headers, params=querystring).json()
+    print(response)
+
+    drink_num = len(response['drinks'])
+
+    print('')
+    for x in range(drink_num):
+        print(f'{response["drinks"][x]["strDrink"] : <20}')
 
 def testing_1():
     url_appended = url + url_random
@@ -57,7 +73,6 @@ def testing_1():
     response = requests.request("GET", url_appended, headers=headers).json()
 
     print(response)
-
 
 def non_alcoholic():
     url_appended = url + url_filter
@@ -88,6 +103,8 @@ def testing_menu():
     print('2. drink_search')
     print('3. popular')
     print('4. non_alcoholic')
+    print('5. search_ingredients')
+    print('6. random_drink')
     choice = input('Enter choice: ')
     
     return choice
