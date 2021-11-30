@@ -4,13 +4,17 @@
 
 import requests
 import json
+from PIL import Image
+import urllib.request
+import tkinter as tk
 
 url = "https://the-cocktail-db.p.rapidapi.com/"
 
 #HEADERS
 headers = {
     'x-rapidapi-host': "the-cocktail-db.p.rapidapi.com",
-    'x-rapidapi-key': "<INSERT API KEY HERE>"
+    
+    'x-rapidapi-key': "<REPLACE WITH YOUR KEY>"
     }
 
 #URL APPENDERS
@@ -59,7 +63,6 @@ def search_ingredient():
     querystring = {"i":ingredients}
 
     response = requests.request("GET", url_appended, headers=headers, params=querystring).json()
-    print(response)
 
     drink_num = len(response['drinks'])
 
@@ -71,6 +74,11 @@ def testing_1():
     url_appended = url + url_random
     
     response = requests.request("GET", url_appended, headers=headers).json()
+
+    urllib.request.urlretrieve(response['drinks'][0]['strDrinkThumb'],'img.png')
+
+    img = Image.open("img.png")
+    img.show()
 
     print(response)
 
@@ -141,5 +149,10 @@ def drink_search():
             break
         print(response['drinks'][0][ingredient_num])
     print('Instructions: ',response['drinks'][0]['strInstructions'])
+
+    urllib.request.urlretrieve(response['drinks'][0]['strDrinkThumb'],'img.png')
+
+    img = Image.open("img.png")
+    img.show()
 
 main()
